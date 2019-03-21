@@ -13,15 +13,29 @@ var connection = mysql.createConnection({
     user: "root",
   
     // Your password
-    password: "Collegebum1",
+    password: "password",
     database: "Bamazon"
   });
 
   connection.connect(function(err) {
     if (err) throw err;
-    // run the start function after the connection is made to prompt the user
+    //run the start function after the connection is made to prompt the user
+    displayWares();
     start();
+    connection.end();
   });
+
+
+  function displayWares() {
+    var query = connection.query("SELECT * FROM Bamazon.products", function(err, res){
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log("PRODUCT ID: " + res[i].id + "   PRODUCT NAME: " + res[i].product_name + "   DEPARTMENT: " + res[i].department_name + "   PRICE: " + res[i].price);
+    }
+    
+})
+  
+}
 
   function start() {
       // function which prompts the user for what action they should take
@@ -30,8 +44,8 @@ var connection = mysql.createConnection({
         name: "welcome",
         type: "input",
         message: "Welcome to Bamazon! Please inter the product ID of the item you would like to buy"
-      })
-      .prompt({
+      },
+      {
           name: "quantity",
           type: "input",
           message: "Great! Now, select how many units you would like to buy"
@@ -41,18 +55,9 @@ var connection = mysql.createConnection({
         if (answer.welcome === "NaN") {
             console.log("Im sorry, we couldnt find the item you were looking for");
             return;
-        }
-        else {
-          connection.end();
-        }
+        } else console.log("will it work");
       });
   }
  
 
-function displayWares() {
-    var query = connection.query("SELECT * FROM Bamazon.products", function(err, res){
-        if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            console.log("PRODUCT ID: " + res[i].id + "   PRODUCT NAME: " + res[i].product_name + "   DEPARTMENT: " + res[i].department_name + "   PRICE: " + res[i].price);
-    }
-})};
+
