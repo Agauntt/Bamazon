@@ -1,6 +1,9 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 
+// Purchase variables 
+var b;
+var qty;
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -25,6 +28,7 @@ var connection = mysql.createConnection({
   });
 
   function displayWares() {
+
     console.log("--------------- WELCOME TO BAMAZON!! ---------------------")
     connection.query("SELECT * FROM Bamazon.products", function(err, res){
         if (err) throw err;
@@ -33,7 +37,7 @@ var connection = mysql.createConnection({
             console.log("----------------------------------------------------------------------")
         }
        
-            inquirer.prompt({
+            inquirer.prompt([{
               name: "welcome",
               type: "input",
               message: "Welcome to Bamazon! Please inter the product ID of the item you would like to buy"
@@ -42,16 +46,23 @@ var connection = mysql.createConnection({
                 name: "quantity",
                 type: "input",
                 message: "Great! Now, select how many units you would like to buy"
-            })
+            }])
             .then(function(answer) {
               // based on their answer, either call the bid or the post functions
               if (answer.welcome === "NaN") {
                   console.log("Im sorry, we couldnt find the item you were looking for");
                   return;
-              } else console.log("will it work");
+              }
+              b = answer.welcome;
+              qty = answer.quantity;
+              console.log(res[b - 1].product_name);
+              console.log(qty);
+              
           })
         })
       }
+
+      
  
 
 
