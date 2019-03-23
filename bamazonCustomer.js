@@ -55,12 +55,27 @@ var connection = mysql.createConnection({
               }
               b = answer.welcome;
               qty = answer.quantity;
-              console.log(res[b - 1].product_name);
+              item = res[b - 1].product_name;
+              stock = res[b - 1].stock;
+              price = parseInt(qty) * parseInt(res[b - 1].price);
+              console.log(item);
               console.log(qty);
               
+              if (qty > stock) {
+                console.log("I'm sorry, we don't have that many in stock.");
+              } else {
+                console.log("Thank you for your purchase of " + item + ". You're total for today is $" + price); 
+                
+              }
+
           })
         })
       }
+
+  // function stockCheck() {
+  //   if
+  // }
+
 
       
  
